@@ -1,0 +1,23 @@
+﻿<Window x:Class="WpfApp1.CompareWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:chart="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+        Title="Compare Window" Height="450" Width="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Column="0" Margin="10">
+            <Button x:Name="CompareButton" Content="Compare" Click="CompareButton_Click" Width="120" Margin="0 0 0 10"/>
+            <Label Content="CTRL כאשר אתה רוצה לבחור יותר ממודל אחד החזק ובחר" Margin="0 0 0 10" FontSize="10" />
+            <TextBox x:Name="SearchBox" TextChanged="SearchBox_TextChanged" Margin="0 0 0 10"/>
+            <ListBox x:Name="carListBox" SelectionMode="Extended" SelectionChanged="CarListBox_SelectionChanged" Height="300">
+                <!-- ListBoxItems will be added dynamically in the CompareWindow constructor -->
+            </ListBox>
+        </StackPanel>
+        <Grid Grid.Column="1">
+            <chart:CartesianChart x:Name="chart" Margin="10"/>
+        </Grid>
+    </Grid>
+</Window>

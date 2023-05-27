@@ -9,8 +9,8 @@
         <PasswordBox Name="PasswordBox" />
         <Label Content="קוד להרשמה בלבד" />
         <PasswordBox Name="PinCodeBox" />
-        <Button Content="התחבר למערכת" Click="LoginButton_Click" />
-        <Button Content="הירשם למערכת" Click="SignUpButton_Click" />
-        <Button Content="Admin Control Panel" Click="OpenAdminControlPanel_Click" />
+        <Button Content="התחבר למערכת" Click="LoginButton_Click" Style="{StaticResource CustomButtonStyle}" />
+        <Button Content="הירשם למערכת" Click="SignUpButton_Click" Style="{StaticResource CustomButtonStyle}" />
+        <Button Content="פנאל מנהל" Click="OpenAdminControlPanel_Click" Style="{StaticResource CustomButtonStyle}" />
     </StackPanel>
 </Window>

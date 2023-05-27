@@ -3,7 +3,6 @@ using System.Windows;
 using System.Data.Entity;
 using System.Windows.Controls;
 
-
 namespace WpfApp1
 {
     public partial class AdminControlPanel : Window
@@ -63,7 +62,7 @@ namespace WpfApp1
             var selectedUser = dataGrid.SelectedItem as User;
             if (selectedUser != null)
             {
-                var modifyWindow = new ModifyUserWindow(selectedUser);
+                var modifyWindow = new ModifyUserWindow(selectedUser, _dbContext); // pass _dbContext as well
                 modifyWindow.ShowDialog();
 
                 // Refresh the user data after modifying
@@ -74,6 +73,14 @@ namespace WpfApp1
                 MessageBox.Show("Please select a user to modify");
             }
         }
+
+        private void GoBackButton_Click(object sender, RoutedEventArgs e)
+        {
+            var mainWindow = new MainWindow();
+            mainWindow.Show();
+            this.Close();
+        }
+
 
         private void LogoutButton_Click(object sender, RoutedEventArgs e)
         {

@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Linq;
 using System.Windows;
-using System.Data.Entity;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Windows;
-using System.Data.Entity;
-using System.ComponentModel.DataAnnotations;
-
+using System.Windows.Controls;
+using BCrypt.Net;
+using Microsoft.EntityFrameworkCore.SqlServer;
+using Microsoft.EntityFrameworkCore;
 
 namespace WpfApp1
 {
@@ -28,15 +26,25 @@ namespace WpfApp1
             string username = UsernameTextBox.Text;
             string password = PasswordBox.Password;
 
-            var user = _dbContext.Users.FirstOrDefault(u => u.Username == username && u.Password == password);
+            var user = _dbContext.Users.FirstOrDefault(u => u.Username == username);
 
-            if (user != null)
+            if (user != null && BCrypt.Net.BCrypt.Verify(password, user.Password))
             {
                 MessageBox.Show("Login successful");
 
-                // Check if it's an admin login
                 if (username == "admin")
                 {
+                    string hashedAdminPin = BCrypt.Net.BCrypt.HashPassword(AdminPin);
+                    string hashedSignUpPin = BCrypt.Net.BCrypt.HashPassword(SignUpPin);
+                    var passwordEntryWindow = new PasswordEntryWindow(hashedAdminPin, hashedSignUpPin);
+                    passwordEntryWindow.ShowDialog();
+
+                    if (!passwordEntryWindow.ArePasswordsCorrect)
+                    {
+                        MessageBox.Show("Incorrect passwords. Access denied.");
+                        return;
+                    }
+
                     var adminControlPanel = new AdminControlPanel();
                     adminControlPanel.Show();
                 }
@@ -46,13 +54,14 @@ namespace WpfApp1
                     scrapeWindow.Show();
                 }
 
-                this.Close();
+                Close();
             }
             else
             {
                 MessageBox.Show("Username or password is incorrect");
             }
         }
+
 
         private void SignUpButton_Click(object sender, RoutedEventArgs e)
         {
@@ -62,7 +71,8 @@ namespace WpfApp1
 
             if (pin == SignUpPin)
             {
-                var user = new User { Username = username, Password = password };
+                string hashedPassword = BCrypt.Net.BCrypt.HashPassword(password);
+                var user = new User { Username = username, Password = hashedPassword };
                 _dbContext.Users.Add(user);
                 _dbContext.SaveChanges();
 
@@ -72,6 +82,26 @@ namespace WpfApp1
             {
                 MessageBox.Show("Incorrect pin code");
             }
+        }
+
+
+        private void OpenAdminControlPanel_Click(object sender, RoutedEventArgs e)
+        {
+            string hashedAdminPin = BCrypt.Net.BCrypt.HashPassword(AdminPin);
+            string hashedSignUpPin = BCrypt.Net.BCrypt.HashPassword(SignUpPin);
+
+            var passwordEntryWindow = new PasswordEntryWindow(hashedAdminPin, hashedSignUpPin);
+            passwordEntryWindow.ShowDialog();
+
+            if (!passwordEntryWindow.ArePasswordsCorrect)
+            {
+                MessageBox.Show("Incorrect passwords. Access denied.");
+                return;
+            }
+
+            var adminControlPanel = new AdminControlPanel();
+            adminControlPanel.Show();
+            Close();
         }
     }
 
@@ -85,5 +115,10 @@ namespace WpfApp1
     public class UserDbContext : DbContext
     {
         public DbSet<User> Users { get; set; }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlServer("Server=tcp:bazzgosystems.database.windows.net,1433;Initial Catalog=BazzGOSystem;Persist Security Info=False;User ID=orelmizrahi14;Password=Orel8520@;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
+        }
     }
 }
