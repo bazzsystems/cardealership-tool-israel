@@ -13,11 +13,14 @@
     <PackageReference Include="HtmlAgilityPack" Version="1.11.46" />
     <PackageReference Include="LiveCharts" Version="0.9.7" />
     <PackageReference Include="LiveCharts.Wpf" Version="0.9.7" />
+    <PackageReference Include="MaterialDesignColors" Version="2.1.4" />
+    <PackageReference Include="MaterialDesignThemes" Version="4.9.0" />
+    <PackageReference Include="MaterialDesignThemes.Wpf" Version="1.0.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.5" />
-    <PackageReference Include="Microsoft.Playwright" Version="1.33.0" />
     <PackageReference Include="Selenium.Chrome.WebDriver" Version="85.0.0" />
     <PackageReference Include="Selenium.WebDriver" Version="4.9.1" />
+    <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="113.0.5672.6300" />
     <Compile Remove="obj\Debug\net6.0-windows\ModifyUserWindow.g.cs" />
     <Compile Remove="obj\Debug\net6.0-windows\ScrapeWindow.g.cs" />
   </ItemGroup>

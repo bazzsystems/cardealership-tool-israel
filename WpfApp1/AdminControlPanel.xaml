@@ -8,21 +8,21 @@
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
 
-        <Border Grid.Column="1" Background="#EEE" Margin="10">
+        <Border Grid.Column="1" Background="#5b8beb" Margin="10">
             <Border Padding="10">
-                <StackPanel VerticalAlignment="Stretch" Width="150">
-                    <Label Content="שם משתמש" />
-                    <TextBox Name="UsernameTextBox" />
-                    <Label Content="סיסמה" />
-                    <PasswordBox Name="PasswordBox" />
-                    <Button Content="הוסף" Margin="0 0 0 10" Click="AddButton_Click" Width="149" />
-                    <Button Content="מחק" Click="DeleteButton_Click" Width="149"/>
-                    <Button Content="חזור" Click="GoBackButton_Click" Width="149"/>
+                <StackPanel VerticalAlignment="Center" Width="150">
+                    <Label Content="שם משתמש" HorizontalAlignment="Center" Foreground="White" />
+                    <TextBox Name="UsernameTextBox" Margin="0 5" />
+                    <Label Content="סיסמה" HorizontalAlignment="Center" Foreground="White" />
+                    <PasswordBox Name="PasswordBox" Margin="0 5" />
+                    <Button Content="הוסף" Margin="0 5" Click="AddButton_Click" Background="#007ACC" Foreground="White" Width="149" />
+                    <Button Content="מחק" Click="DeleteButton_Click" Background="#007ACC" Foreground="White" Width="149" />
+                    <Button Content="חזור" Click="GoBackButton_Click" Background="#007ACC" Foreground="White" Width="149" />
                 </StackPanel>
             </Border>
         </Border>
 
-        <DataGrid Name="dataGrid" Grid.Column="0" Margin="10" AutoGenerateColumns="False">
+        <DataGrid Name="dataGrid" Grid.Column="0" Margin="10" AutoGenerateColumns="False" Background="White">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="שם משתמש" Binding="{Binding Username}" />
                 <DataGridTextColumn Header="סיסמה" Binding="{Binding Password}" />

@@ -63,31 +63,35 @@ namespace WpfApp1
             }
         }
 
-
         private void ScrapePage(int i)
         {
             var options = new ChromeOptions();
             options.AddArgument("headless");
             options.AddArgument("--log-level=3");
 
-            string pathToChromeDriver = @"C:\chromedriver.exe";
-
-            var driverService = ChromeDriverService.CreateDefaultService(pathToChromeDriver);
-            driverService.HideCommandPromptWindow = true;
-
-            using (var driver = new ChromeDriver(driverService, options))
+            using (var driver = new ChromeDriver(options))
             {
-                driver.Navigate().GoToUrl($"https://www.ad.co.il/car?pageindex={i}");
+                try
+                {
+                    driver.Navigate().GoToUrl($"https://www.ad.co.il/car?pageindex={i}");
 
-                WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
-                wait.Until(d => d.FindElement(By.XPath("//h2[@class='card-title mb-0 mb-sm-1']")));
+                    WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+                    wait.Until(d => d.FindElement(By.XPath("//h2[@class='card-title mb-0 mb-sm-1']")));
 
-                var htmlDoc = new HtmlDocument();
-                htmlDoc.LoadHtml(driver.PageSource);
+                    var htmlDoc = new HtmlDocument();
+                    htmlDoc.LoadHtml(driver.PageSource);
 
-                ExtractCarDataFromHtml(htmlDoc);
+                    ExtractCarDataFromHtml(htmlDoc);
+                }
+                finally
+                {
+                    driver.Quit();
+                }
             }
         }
+
+
+
 
         private void ExtractCarDataFromHtml(HtmlDocument htmlDoc)
         {
