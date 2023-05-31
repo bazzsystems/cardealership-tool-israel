@@ -68,8 +68,10 @@ namespace WpfApp1
             var options = new ChromeOptions();
             options.AddArgument("headless");
             options.AddArgument("--log-level=3");
+            // remember to remove debug chrome driver
+            var driverService = ChromeDriverService.CreateDefaultService(@"C:\chromedriver.exe");
 
-            using (var driver = new ChromeDriver(options))
+            using (var driver = new ChromeDriver(driverService, options))
             {
                 try
                 {
@@ -95,20 +97,44 @@ namespace WpfApp1
 
         private void ExtractCarDataFromHtml(HtmlDocument htmlDoc)
         {
-            var carModels = htmlDoc.DocumentNode.SelectNodes("//h2[@class='card-title mb-0 mb-sm-1']");
-            if (carModels != null)
+            var carNodes = htmlDoc.DocumentNode.SelectNodes("//div[@class='card overflow-hidden']");
+            if (carNodes != null)
             {
-                foreach (var model in carModels)
+                foreach (var carNode in carNodes)
                 {
-                    var modelText = model.InnerText.Trim();
-                    CarModel carModel = ExtractCarModelFromElement(modelText);
-                    if (carModel != null)
+                    var modelNode = carNode.SelectSingleNode(".//h2[@class='card-title mb-0 mb-sm-1']");
+                    var priceNode = carNode.SelectSingleNode(".//div[@class='price ms-1']");
+                    var mileageNode = carNode.SelectSingleNode(".//i[contains(@class, 'fa-tachometer-alt')]/following-sibling::span");
+
+                    if (modelNode != null && priceNode != null && mileageNode != null)
                     {
-                        AddOrUpdateCarData(carModel);
+                        var modelText = modelNode.InnerText.Trim();
+                        var priceText = priceNode.InnerText.Trim().Replace(",", "").Replace("₪", "");
+                        var mileageText = mileageNode.InnerText.Trim().Replace("K", "").Replace("ק\"מ", "");
+                        var carModel = ExtractCarModelFromElement(modelText, priceText, mileageText);
+                        if (carModel != null)
+                        {
+                            AddOrUpdateCarData(carModel);
+                        }
                     }
                 }
             }
         }
+
+        private CarModel ExtractCarModelFromElement(string modelText, string priceText, string mileageText)
+        {
+            string brand = modelText.Split(" ")[0];
+            string model = string.Join(" ", modelText.Split(" ").Skip(1));
+
+            // Get actual values for year, price, and hands from HTML
+            int year = 0; // assuming you still need to parse this from somewhere
+            int price = int.TryParse(priceText, out int priceResult) ? priceResult : 0;
+            int mileage = int.TryParse(mileageText, out int mileageResult) ? mileageResult : 0;
+            int hands = 0; // assuming you still need to parse this from somewhere
+
+            return new CarModel { Brand = brand, Model = model, Year = year, Price = price, Mileage = mileage, Hands = hands };
+        }
+
 
         private CarModel ExtractCarModelFromElement(string modelText)
         {
@@ -152,6 +178,7 @@ namespace WpfApp1
                         Model = modelEntry.Key,
                         Year = modelEntry.Value.Select(car => car.Year).FirstOrDefault(),
                         AveragePrice = modelEntry.Value.Select(car => car.Price).Average(),
+                        AverageMileage = modelEntry.Value.Select(car => car.Mileage).Average(), // Add this line
                         AverageHands = modelEntry.Value.Select(car => car.Hands).Average(),
                         Count = modelEntry.Value.Count
                     }))
@@ -162,6 +189,7 @@ namespace WpfApp1
                 dataGrid.ItemsSource = flattenCarData;
             });
         }
+
         private void GoBackButton_Click(object sender, RoutedEventArgs e)
         {
             var mainWindow = new MainWindow();
@@ -204,6 +232,7 @@ namespace WpfApp1
                         Model = modelEntry.Key,
                         Year = modelEntry.Value.Select(car => car.Year).FirstOrDefault(),
                         AveragePrice = modelEntry.Value.Select(car => car.Price).Average(),
+                        AverageMileage = modelEntry.Value.Select(car => car.Mileage).Average(), // Add this line
                         AverageHands = modelEntry.Value.Select(car => car.Hands).Average(),
                         Count = modelEntry.Value.Count
                     }))
@@ -212,13 +241,17 @@ namespace WpfApp1
             dataGrid.ItemsSource = searchResult;
         }
 
+
         public class CarModel
         {
             public string Brand { get; set; }
             public string Model { get; set; }
             public int Year { get; set; }
             public int Price { get; set; }
+            public int Mileage { get; set; }
             public int Hands { get; set; }
         }
+
+
     }
 }
