@@ -35,7 +35,7 @@ namespace WpfApp1
 
         private async void PullTrendingCars24Button_Click(object sender, RoutedEventArgs e)
         {
-            await ScrapeCars(20);
+            await ScrapeCars(24);
         }
 
         private async Task ScrapeCars(int limit)
@@ -97,7 +97,7 @@ namespace WpfApp1
 
         private void ExtractCarDataFromHtml(HtmlDocument htmlDoc)
         {
-            var carNodes = htmlDoc.DocumentNode.SelectNodes("//div[@class='card overflow-hidden']");
+            var carNodes = htmlDoc.DocumentNode.SelectNodes("//div[@class='card-body p-md-3']");
             if (carNodes != null)
             {
                 foreach (var carNode in carNodes)
@@ -105,13 +105,15 @@ namespace WpfApp1
                     var modelNode = carNode.SelectSingleNode(".//h2[@class='card-title mb-0 mb-sm-1']");
                     var priceNode = carNode.SelectSingleNode(".//div[@class='price ms-1']");
                     var mileageNode = carNode.SelectSingleNode(".//i[contains(@class, 'fa-tachometer-alt')]/following-sibling::span");
+                    var handsNode = carNode.SelectSingleNode(".//div[contains(@class, 'card-icon-wrapper')]/i[contains(@class, 'fa-hand-paper')]/following-sibling::span");
 
-                    if (modelNode != null && priceNode != null && mileageNode != null)
+                    if (modelNode != null && priceNode != null && mileageNode != null && handsNode != null)
                     {
                         var modelText = modelNode.InnerText.Trim();
                         var priceText = priceNode.InnerText.Trim().Replace(",", "").Replace("₪", "");
-                        var mileageText = mileageNode.InnerText.Trim().Replace("K", "").Replace("ק\"מ", "");
-                        var carModel = ExtractCarModelFromElement(modelText, priceText, mileageText);
+                        var mileageText = mileageNode.InnerText.Trim().Replace("K", "").Replace("ק\"מ", "").Replace("&nbsp;", "");
+                        var handsText = handsNode.InnerText.Trim().Replace("&nbsp;", "");
+                        var carModel = ExtractCarModelFromElement(modelText, priceText, mileageText, handsText);
                         if (carModel != null)
                         {
                             AddOrUpdateCarData(carModel);
@@ -121,7 +123,7 @@ namespace WpfApp1
             }
         }
 
-        private CarModel ExtractCarModelFromElement(string modelText, string priceText, string mileageText)
+        private CarModel ExtractCarModelFromElement(string modelText, string priceText, string mileageText, string handsText)
         {
             string brand = modelText.Split(" ")[0];
             string model = string.Join(" ", modelText.Split(" ").Skip(1));
@@ -130,7 +132,7 @@ namespace WpfApp1
             int year = 0; // assuming you still need to parse this from somewhere
             int price = int.TryParse(priceText, out int priceResult) ? priceResult : 0;
             int mileage = int.TryParse(mileageText, out int mileageResult) ? mileageResult : 0;
-            int hands = 0; // assuming you still need to parse this from somewhere
+            int hands = int.TryParse(handsText, out int handsResult) ? handsResult : 0;
 
             return new CarModel { Brand = brand, Model = model, Year = year, Price = price, Mileage = mileage, Hands = hands };
         }
@@ -177,8 +179,10 @@ namespace WpfApp1
                         Brand = brandEntry.Key,
                         Model = modelEntry.Key,
                         Year = modelEntry.Value.Select(car => car.Year).FirstOrDefault(),
-                        AveragePrice = modelEntry.Value.Select(car => car.Price).Average(),
-                        AverageMileage = modelEntry.Value.Select(car => car.Mileage).Average(), // Add this line
+                        MinPrice = modelEntry.Value.Select(car => car.Price).Min(),
+                        MaxPrice = modelEntry.Value.Select(car => car.Price).Max(),
+                        MinMileage = modelEntry.Value.Select(car => car.Mileage).Min(),
+                        MaxMileage = modelEntry.Value.Select(car => car.Mileage).Max(),
                         AverageHands = modelEntry.Value.Select(car => car.Hands).Average(),
                         Count = modelEntry.Value.Count
                     }))
@@ -231,8 +235,10 @@ namespace WpfApp1
                         Brand = brandEntry.Key,
                         Model = modelEntry.Key,
                         Year = modelEntry.Value.Select(car => car.Year).FirstOrDefault(),
-                        AveragePrice = modelEntry.Value.Select(car => car.Price).Average(),
-                        AverageMileage = modelEntry.Value.Select(car => car.Mileage).Average(), // Add this line
+                        MinPrice = modelEntry.Value.Select(car => car.Price).Min(),
+                        MaxPrice = modelEntry.Value.Select(car => car.Price).Max(),
+                        MinMileage = modelEntry.Value.Select(car => car.Mileage).Min(),
+                        MaxMileage = modelEntry.Value.Select(car => car.Mileage).Max(),
                         AverageHands = modelEntry.Value.Select(car => car.Hands).Average(),
                         Count = modelEntry.Value.Count
                     }))

@@ -43,9 +43,10 @@
                 <DataGridTextColumn Header="Brand" Binding="{Binding Brand}" />
                 <DataGridTextColumn Header="Model" Binding="{Binding Model}" />
                 <DataGridTextColumn Header="Year" Binding="{Binding Year}" />
-                <DataGridTextColumn Header="Average Price" Binding="{Binding AveragePrice}" />
-                <DataGridTextColumn Header="Average Mileage" Binding="{Binding AverageMileage}" />
-                <!-- This line is necessary to display mileage -->
+                <DataGridTextColumn Header="Min Price" Binding="{Binding MinPrice}" />
+                <DataGridTextColumn Header="Max Price" Binding="{Binding MaxPrice}" />
+                <DataGridTextColumn Header="Min Mileage (K)" Binding="{Binding MinMileage}" />
+                <DataGridTextColumn Header="Max Mileage (K)" Binding="{Binding MaxMileage}" />
                 <DataGridTextColumn Header="Average Hands" Binding="{Binding AverageHands}" />
                 <DataGridTextColumn Header="Count" Binding="{Binding Count}" />
             </DataGrid.Columns>
