@@ -30,7 +30,7 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <StackPanel Grid.Column="1" VerticalAlignment="Center">
-            <Image x:Name="Logo" Source="Images/logo.png" Margin="10" Height="35" Width="250" />
+            <Image x:Name="Logo" Source="C:\Users\Orel\source\repos\orelmizrahii\WpfApp1\WpfApp1\Images\logo.png" Margin="10" Height="35" Width="250" />
             <Label Content="Username" />
             <TextBox Name="UsernameTextBox" Margin="5" />
             <Label Content="Password" />

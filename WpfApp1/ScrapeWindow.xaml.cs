@@ -223,7 +223,11 @@ namespace WpfApp1
 
             compareWindow.Show();
         }
-
+        private void LP_Click(object sender, RoutedEventArgs e)
+        {
+            var lpCheckWindow = new LPCheckWindow();
+            lpCheckWindow.Show();
+        }
         private void SearchButton_Click(object sender, RoutedEventArgs e)
         {
             string searchModel = SearchBox.Text.ToLower();
