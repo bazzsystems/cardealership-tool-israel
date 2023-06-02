@@ -20,25 +20,25 @@
         </Style>
     </Window.Resources>
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
 
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20">
+        <StackPanel Grid.Column="0" Margin="10,0">
+            <Image x:Name="Logo" Source="Images/logo.png" Margin="10" Height="35" Width="250" />
+            <!-- Assuming logo.png is in the project -->
+            <TextBox x:Name="SearchBox" Width="200" Margin="5" />
+            <Button Content="Search" Click="SearchButton_Click" Style="{StaticResource CustomButtonStyle}" />
             <Button x:Name="StartScrapingButton" Content="Fetch" Click="StartScrapingButton_Click" Style="{StaticResource CustomButtonStyle}" />
             <Button x:Name="PullTrendingCars30Button" Content="Pull Trending (30)" Click="PullTrendingCars30Button_Click" Style="{StaticResource CustomButtonStyle}" />
             <Button x:Name="PullTrendingCars24Button" Content="Pull Trending (24)" Click="PullTrendingCars24Button_Click" Style="{StaticResource CustomButtonStyle}" />
-            <TextBox x:Name="SearchBox" Width="200" Margin="5" />
-            <Button Content="Search" Click="SearchButton_Click" Style="{StaticResource CustomButtonStyle}" />
             <Button x:Name="CompareButton" Content="Compare" Click="CompareButton_Click" Style="{StaticResource CustomButtonStyle}" />
             <Button x:Name="GoBackButton" Content="Go Back" Click="GoBackButton_Click" Style="{StaticResource CustomButtonStyle}" />
             <Button x:Name="LogoutButton" Content="Logout" Click="LogoutButton_Click" Style="{StaticResource CustomButtonStyle}" />
         </StackPanel>
 
-        <DataGrid x:Name="dataGrid" AutoGenerateColumns="False" Grid.Row="2">
+        <DataGrid x:Name="dataGrid" AutoGenerateColumns="False" Grid.Column="1">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Brand" Binding="{Binding Brand}" />
                 <DataGridTextColumn Header="Model" Binding="{Binding Model}" />
@@ -47,7 +47,6 @@
                 <DataGridTextColumn Header="Max Price" Binding="{Binding MaxPrice}" />
                 <DataGridTextColumn Header="Min Mileage (K)" Binding="{Binding MinMileage}" />
                 <DataGridTextColumn Header="Max Mileage (K)" Binding="{Binding MaxMileage}" />
-                <DataGridTextColumn Header="Average Hands" Binding="{Binding AverageHands}" />
                 <DataGridTextColumn Header="Count" Binding="{Binding Count}" />
             </DataGrid.Columns>
         </DataGrid>

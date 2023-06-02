@@ -1,7 +1,7 @@
 ﻿<Window x:Class="WpfApp1.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Bazz GO Systems - התחבר למערכת" Height="500" Width="320"
+        Title="Bazz Systems - Login" Height="500" Width="320"
         Background="White"
         TextElement.FontSize="16"
         TextElement.FontFamily="Segoe UI"
@@ -30,16 +30,17 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <StackPanel Grid.Column="1" VerticalAlignment="Center">
-            <Label Content="שם משתמש" />
+            <Image x:Name="Logo" Source="Images/logo.png" Margin="10" Height="35" Width="250" />
+            <Label Content="Username" />
             <TextBox Name="UsernameTextBox" Margin="5" />
-            <Label Content="סיסמה" />
+            <Label Content="Password" />
             <PasswordBox Name="PasswordBox" Margin="5" />
-            <Label Content="קוד להרשמה בלבד" />
+            <Label Content="Signup Code" />
             <PasswordBox Name="PinCodeBox" Margin="5" />
 
-            <Button Content="התחבר למערכת" Click="LoginButton_Click" Style="{StaticResource CustomButtonStyle}" Margin="5,20,5,10" />
-            <Button Content="הירשם למערכת" Click="SignUpButton_Click" Style="{StaticResource CustomButtonStyle}" Margin="5,10" />
-            <Button Content="פנאל מנהל" Click="OpenAdminControlPanel_Click" Style="{StaticResource CustomButtonStyle}" Margin="5,10" />
+            <Button Content="Login" Click="LoginButton_Click" Style="{StaticResource CustomButtonStyle}" Margin="5,20,5,10" />
+            <Button Content="Register" Click="SignUpButton_Click" Style="{StaticResource CustomButtonStyle}" Margin="5,10" />
+            <Button Content="Admin Panel" Click="OpenAdminControlPanel_Click" Style="{StaticResource CustomButtonStyle}" Margin="5,10" />
         </StackPanel>
     </Grid>
 </Window>
