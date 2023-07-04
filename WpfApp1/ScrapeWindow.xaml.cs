@@ -69,9 +69,8 @@ namespace WpfApp1
             options.AddArgument("headless");
             options.AddArgument("--log-level=3");
             // remember to remove debug chrome driver
-            var driverService = ChromeDriverService.CreateDefaultService(@"C:\chromedriver.exe");
 
-            using (var driver = new ChromeDriver(driverService, options))
+            using (var driver = new ChromeDriver(options))
             {
                 try
                 {
