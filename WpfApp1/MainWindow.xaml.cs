@@ -118,7 +118,7 @@ namespace WpfApp1
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=tcp:bazzgosystems.database.windows.net,1433;Initial Catalog=BazzGOSystem;Persist Security Info=False;User ID=orelmizrahi14;Password=Orel8520@;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
+            optionsBuilder.UseSqlServer("ServerHIDDEN;");
         }
     }
 }
